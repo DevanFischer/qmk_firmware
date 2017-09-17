@@ -21,9 +21,6 @@ enum {
   M_ENTB,              // Open up a line below the cursor with a brace {
   M_DPIP,              // Double pipe || (or in many languages)
   M_DAMP,              // Double ampersand && (and in many languages)
-  M_ASUP, // Auto Shift Up (Increase Timeout)
-  M_ASDN, // Auto Shift Down (Decrease Timeout)
-  M_ASTM, // Auto Shift Time or Report Time
   DYNAMIC_MACRO_RANGE
 };
 
@@ -92,56 +89,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET},
   {KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX, XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT},
   {KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
-  {M_ASDN,  M_ASUP,  M_ASTM,  XXXXXXX, XXXXXXX, KC_DELT, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX}
+  {KC_ASDN, KC_ASUP, KC_ASRP, XXXXXXX, XXXXXXX, KC_DELT, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX}
 }};
 
-bool autoshifting = false;
-bool autoshift_timing = false;
-uint16_t autoshift_time = 0;
-uint16_t autoshift_lastkey = 0;
-uint16_t autoshift_timeout = 200;
-uint16_t autoshift_timer = 0;
-uint16_t autoshift_timer_min = 999;
-uint16_t autoshift_timer_max = 0;
-uint16_t autoshift_timer_keys = 0;
-
-void autoshift_on(uint16_t keycode) {
-  autoshift_time = timer_read();
-  autoshift_lastkey = keycode;
-}
-
-void autoshift_off(void) {
-  autoshift_time = 0;
-  autoshift_lastkey = KC_NO;
-}
-
-void autoshift_flush(void) {
-  if (autoshift_lastkey != KC_NO) {
-    uint16_t elapsed = timer_elapsed(autoshift_time);
-
-    if (elapsed > autoshift_timeout) {
-      TAP_WITH_MOD(KC_LSFT, autoshift_lastkey);
-    } else {
-      TAP(autoshift_lastkey);
-    }
-
-    if (autoshift_timing) {
-      if (elapsed > autoshift_timer_max) {
-        autoshift_timer_max = elapsed;
-      }
-      if (elapsed < autoshift_timer_min) {
-        autoshift_timer_min = elapsed;
-      }
-      autoshift_timer += elapsed;
-    }
-
-    autoshift_off();
-  }
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  static uint8_t any_mod_pressed;
-
   if (!process_record_dynamic_macro(keycode, record)) {
     return false;
   }
@@ -171,117 +122,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case M_DAMP:
         SEND_STRING("&&");
         return false;
-
-      case M_ASUP:
-        autoshift_timeout += 5;
-        return false;
-
-      case M_ASDN:
-        autoshift_timeout -= 5;
-        return false;
-
-      case M_ASTM:
-        if (autoshift_timing) {
-          char val[32];
-
-          autoshift_timing = false;
-          snprintf(val, 32, "\n%d/%d/%d/%d\n",
-            autoshift_timer_min, autoshift_timer / autoshift_timer_keys, autoshift_timer_max,
-            autoshift_timeout);
-          send_string((const char *)val);
-        } else {
-          autoshift_timing = true;
-        }
-
-      case KC_A:
-      case KC_B:
-      case KC_C:
-      case KC_D:
-      case KC_E:
-      case KC_F:
-      case KC_G:
-      case KC_H:
-      case KC_I:
-      case KC_J:
-      case KC_K:
-      case KC_L:
-      case KC_M:
-      case KC_N:
-      case KC_O:
-      case KC_P:
-      case KC_Q:
-      case KC_R:
-      case KC_S:
-      case KC_T:
-      case KC_U:
-      case KC_V:
-      case KC_W:
-      case KC_X:
-      case KC_Y:
-      case KC_Z:
-      case KC_1:
-      case KC_2:
-      case KC_3:
-      case KC_4:
-      case KC_5:
-      case KC_6:
-      case KC_7:
-      case KC_8:
-      case KC_9:
-      case KC_0:
-      case KC_SCLN:
-      case KC_SLSH:
-      case KC_QUOT:
-      case KC_TILD:
-      case KC_EQL:
-      case KC_MINUS:
-        if (autoshift_timing) {
-          autoshift_timer_keys++;
-        }
-
-        autoshift_flush();
-
-        any_mod_pressed = get_mods() & (
-          MOD_BIT(KC_LGUI)|MOD_BIT(KC_RGUI)|
-          MOD_BIT(KC_LALT)|MOD_BIT(KC_RALT)|
-          MOD_BIT(KC_LCTL)|MOD_BIT(KC_RCTL)|
-          MOD_BIT(KC_LSFT)|MOD_BIT(KC_RSFT)
-        );
-
-        if (any_mod_pressed) {
-          return true;
-        }
-
-        autoshift_on(keycode);
-        return false;
-
-      default:
-        autoshift_flush();
-        return true;
     }
-  } else {
-    autoshift_flush();
   }
 
 	return true;
 }
-
-void matrix_init_user(void) {
-}
-
-#define TAP_WITH_MOD(mod, key) \
-  register_code(mod); \
-  register_code(key); \
-  unregister_code(key); \
-  unregister_code(mod)
-
-#define TAP_WITH_2MODS(mod1, mod2, key) \
-  register_code(mod1); \
-  register_code(mod2); \
-  register_code(key); \
-  unregister_code(key); \
-  unregister_code(mod2); \
-  unregister_code(mod1)
 
 LEADER_EXTERNS();
 
