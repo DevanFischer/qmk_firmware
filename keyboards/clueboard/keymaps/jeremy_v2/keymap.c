@@ -17,6 +17,9 @@ enum {
   M_DAMP,               // Double ampersand && (and in many languages)
   M_SFLK,               // Shift Lock
   M_NMTGL,              // Number Toggle
+  M_BRSWP,              // Braces Toggle [] vs. {}
+  MC_LBRC,
+  MC_RBRC,
   DYNAMIC_MACRO_RANGE
 };
 
@@ -46,10 +49,7 @@ enum {
 #define DYNM_P2 DYN_MACRO_PLAY2
 #define DYNM_ST DYN_REC_STOP
 
-#define LT_CODE LT(CODE, KC_ENT)
 #define LT_CURS LT(CURS, KC_SPC)
-#define LT_NUMT LT(NUMS, KC_TAB)
-#define LT_FUNC LT(FKEY, KC_ESC)
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -57,39 +57,22 @@ enum {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [ALPH] = KEYMAP(
-  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  DYNM_P1, DYNM_P2, M_NMTGL,
-  KC_LEAD, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_PGDN,
-  KC_BSPC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, X,       KC_DELT,
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DELT, M_NMTGL,
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          M_BRSWP,
+  KC_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, X,       KC_ENT,
   KC_LSFT, X,KC_Z,  KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, M_SFLK,  KC_UP,
-  KC_LCTL, KC_LGUI, KC_LALT, LT_NUMT, LT_CURS, LT_CODE,                   LT_FUNC, KC_RALT, KC_MENU, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
-[NUMS] = KEYMAP(
-  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XXXXXXX, XXXXXXX, XXXXXXX,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLU, KC_LPRN, KC_7,    KC_8,    KC_9,    KC_RPRN, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-  _______, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI, KC_VOLD, KC_PLUS, KC_4,    KC_5,    KC_6,    KC_ASTR, XXXXXXX, XXXXXXX, _______,
-  _______, X,KC_NO, XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE, KC_MINS, KC_1,    KC_2,    KC_3,    KC_SLSH, XXXXXXX, _______, _______,
-  _______, _______, _______, _______, XXXXXXX, XXXXXXX,                   KC_0,    KC_DOT,  KC_EQL,  _______, _______, _______, _______),
-[CODE] = KEYMAP(
-  XXXXXXX, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, XXXXXXX, XXXXXXX, XXXXXXX,
-  _______, XXXXXXX, KC_EXLM, KC_LBRC, KC_RBRC, KC_AMPR, KC_PIPE, KC_HASH, KC_AT,   KC_PERC, KC_CIRC, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-  _______, KC_0,    KC_EQL,  KC_LPRN, KC_RPRN, KC_PLUS, KC_ASTR, KC_UNDS, KC_DLR,  KC_GRV,  KC_DQUO, XXXXXXX, XXXXXXX, _______,
-  _______, X,KC_1,  KC_TILD, KC_LCBR, KC_RCBR, KC_MINS, KC_SLSH, KC_COLN, KC_SCLN, KC_BSLS, KC_QUES, XXXXXXX, _______, _______,
-  _______, _______, _______, XXXXXXX, XXXXXXX, _______,                   M_ENTUP, M_ENTDN, M_ENTCM, M_ENTBR, _______, _______, _______),
+  KC_ESC,  KC_LGUI, KC_LCTL, KC_LALT, LT_CURS, LT_CURS,                   KC_RALT, KC_RCTL, KC_MENU, KC_ESC,  KC_LEFT, KC_DOWN, KC_RGHT),
 [CURS] = KEYMAP(
-  XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_F13,  KC_F14,  XXXXXXX,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_Y,    KC_HOME, KC_UP,   KC_END,  KC_COPY, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+  KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_F13,  KC_F14,  RESET,
+  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_Y,    KC_HOME, KC_UP,   KC_END,  KC_COPY, MC_LBRC, MC_RBRC, XXXXXXX,          XXXXXXX,
   _______, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_CUT,  XXXXXXX, XXXXXXX, _______,
   _______, X,KC_NO, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, KC_PASTE,XXXXXXX, _______, _______,
-  _______, _______, _______, XXXXXXX, _______, XXXXXXX,                   XXXXXXX, _______, _______, _______, _______, _______, _______),
-[FKEY] = KEYMAP(
-  XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  DYNM_R1, DYNM_R2, DYNM_ST,
-  _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          RESET,
-  _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX, XXXXXXX, _______,
-  _______, X,KC_F1, KC_F2,   KC_F3,   KC_F4,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______,
-  _______, KC_ASDN, KC_ASUP, KC_ASRP, XXXXXXX, XXXXXXX,                   _______, AG_SWAP, AG_NORM, _______, _______, _______, _______)
+  _______, _______, _______, AG_NORM, _______, _______,                   AG_SWAP, _______, _______, _______, _______, _______, _______)
 };
 
 bool shift_lock = false;
 bool number_toggle = false;
+bool brace_toggle = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (!process_record_dynamic_macro(keycode, record)) {
@@ -130,6 +113,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         number_toggle = !number_toggle;
         return false;
 
+      case M_BRSWP:
+        brace_toggle = !brace_toggle;
+        return false;
+
       case KC_1:
       case KC_2:
       case KC_3:
@@ -141,10 +128,68 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_9:
       case KC_0:
         if (number_toggle) {
-          register_code(KC_LSFT);
+          uint16_t mod_code = KC_NO;
+
+          if (get_mods() & MOD_BIT(KC_LSFT)) {
+            mod_code = KC_LSFT;
+          } else if (get_mods() & MOD_BIT(KC_RSFT)) {
+            mod_code = KC_RSFT;
+          }
+
+          if (mod_code != KC_NO) {
+            unregister_code(mod_code);
+            register_code(keycode);
+            unregister_code(keycode);
+            register_code(mod_code);
+          } else {
+            register_code(KC_LSFT);
+            register_code(keycode);
+            unregister_code(keycode);
+            unregister_code(KC_LSFT);
+          }
+
+          return false;
         }
 
         return true;
+
+      case KC_LBRC:
+      case KC_RBRC:
+        if (brace_toggle) {
+          uint16_t mod_code = KC_NO;
+
+          if (get_mods() & MOD_BIT(KC_LSFT)) {
+            mod_code = KC_LSFT;
+          } else if (get_mods() & MOD_BIT(KC_RSFT)) {
+            mod_code = KC_RSFT;
+          }
+
+          if (mod_code != KC_NO) {
+            unregister_code(mod_code);
+            register_code(keycode);
+            unregister_code(keycode);
+            register_code(mod_code);
+          } else {
+            register_code(KC_LSFT);
+            register_code(keycode);
+            unregister_code(keycode);
+            unregister_code(KC_LSFT);
+          }
+
+          return false;
+        }
+
+        return true;
+
+      case MC_LBRC:
+        register_code(KC_LBRC);
+        unregister_code(KC_LBRC);
+        return false;
+
+      case MC_RBRC:
+        register_code(KC_RBRC);
+        unregister_code(KC_RBRC);
+        return false;
 
       default:
         if (shift_lock) {
@@ -153,10 +198,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   } else {
     if (shift_lock) {
-      unregister_code(KC_LSFT);
-    }
-
-    if (number_toggle) {
       unregister_code(KC_LSFT);
     }
   }
