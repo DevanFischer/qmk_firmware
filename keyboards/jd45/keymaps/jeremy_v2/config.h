@@ -4,6 +4,11 @@
 #include "../../config.h"
 
 #define LEADER_TIMEOUT 600
+#define AUTO_SHIFT_TIMEOUT 145
+#define PREVENT_STUCK_MODIFIERS
+#define PERMISSIVE_HOLD
+#define TAPPING_TERM 100
+
 
 #define KEYMAP_JD45V2( \
 	K01, K02, K03, K04, K05, K06, K07, K08, K09, K10, K11, K12, K13, \
