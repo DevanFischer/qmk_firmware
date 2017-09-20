@@ -118,11 +118,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    KC_ESC,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______, _______, _______,
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, _______),
 [CURS] = KEYMAP(
-  KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_F13,  KC_F14,  RESET,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_Y,    KC_HOME, KC_UP,   KC_END,  KC_COPY, MC_LBRC, MC_RBRC, XXXXXXX,          LT_CNFG,
+  KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DELT, KC_DELT, RESET,
+  _______, M_SFLK,  KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, KC_Y,    KC_HOME, KC_UP,   KC_END,  KC_COPY, MC_LBRC, MC_RBRC, XXXXXXX,          LT_CNFG,
   _______, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI, XXXXXXX, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_CUT,  XXXXXXX, XXXXXXX, _______,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, KC_PASTE,XXXXXXX, _______, _______,
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, _______),
+  _______, XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, KC_PASTE,XXXXXXX, _______, _______,
+  _______, _______, _______, _______, _______, M_ENTUP,                   M_ENTDN, M_ENTCM, M_ENTBR, _______, _______, _______, _______),
 [CNFG] = KEYMAP(
   BM_SGE,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, BM_UBB,  BM_UBB,  XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, BM_SBB,           XXXXXXX,
