@@ -24,8 +24,6 @@ enum {
   M_BRSWP,              // Braces Toggle [] vs. {}
   MC_LBRC,
   MC_RBRC,
-  M_CTRSF,
-  M_ALTSF,
   DL_QWER,
   DL_TAR1,
   DL_TAR2,
@@ -65,6 +63,9 @@ enum {
 #define LT_CURS LT(CURS, KC_SPC)
 #define LT_CNFG MO(CNFG)
 
+#define MK_CTSF LCTL(KC_LSFT)
+#define MK_ALSF LALT(KC_LSFT)
+
 #define BM_SGE MAGIC_SWAP_GRAVE_ESC
 #define BM_UGE MAGIC_UNSWAP_GRAVE_ESC
 #define BM_SBB MAGIC_SWAP_BACKSLASH_BACKSPACE
@@ -76,11 +77,11 @@ enum {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [QWER] = KEYMAP(
-  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DELT, M_NMTGL,
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_BSPC, M_NMTGL,
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          M_BRSWP,
   KC_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, X,       KC_ENT,
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_ESC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, M_SFLK,  KC_UP,
-  M_CTRSF, KC_LGUI, KC_LCTL, KC_LALT, LT_CURS, LT_CURS,                   KC_RALT, KC_RCTL, KC_MENU, M_ALTSF, KC_LEFT, KC_DOWN, KC_RGHT),
+  KC_LCTL, KC_LALT, KC_LGUI, XXXXXXX, LT_CURS, KC_ENT,                    XXXXXXX, KC_MENU, KC_RALT, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 [TAR1] = KEYMAP(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, KC_J,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
@@ -141,27 +142,11 @@ bool number_toggle = false;
 bool brace_toggle = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  static uint16_t mods;
-
   if (!process_record_dynamic_macro(keycode, record)) {
     return false;
   }
 
   if (record->event.pressed) {
-    if (keycode == KC_ENT) {
-      mods = get_mods();
-
-      if (mods & (MOD_BIT(KC_LCTL)) && mods & (MOD_BIT(KC_LSFT))) {
-        keycode = M_ENTCM;
-      } else if (mods & (MOD_BIT(KC_LCTL)|MOD_BIT(KC_RCTL))) {
-        keycode = M_ENTUP;
-      } else if (mods & (MOD_BIT(KC_LALT)|MOD_BIT(KC_RALT))) {
-        keycode = M_ENTDN;
-      } else if (mods & (MOD_BIT(KC_LSFT)|MOD_BIT(KC_RSFT))) {
-        keycode = M_ENTBR;
-      }
-    }
-
     switch (keycode) {
       case DL_QWER:
         persistent_default_layer_set(1UL<<QWER);
@@ -191,16 +176,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         persistent_default_layer_set(1UL<<DVOR);
         return false;
 
-      case M_CTRSF:
-        register_code(KC_LCTL);
-        register_code(KC_LSFT);
-        return false;
-
-      case M_ALTSF:
-        register_code(KC_LALT);
-        register_code(KC_LSFT);
-        return false;
-
       case M_ENTUP:
         SEND_STRING(SS_TAP(X_HOME)"\n"SS_TAP(X_UP));
         return false;
@@ -210,10 +185,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
 
       case M_ENTCM:
-        SEND_STRING(SS_TAP(X_END)" ,\n");
+        SEND_STRING(SS_TAP(X_END)",\n");
         return false;
 
-      case M_ENTBR:
+        case M_ENTBR:
         SEND_STRING(SS_TAP(X_END)" {\n");
         return false;
 
@@ -227,6 +202,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
       case M_SFLK:
         shift_lock = !shift_lock;
+
+        if (shift_lock) {
+          register_code(KC_LSFT);
+        } else {
+          unregister_code(KC_LSFT);
+        }
         return false;
 
       case M_NMTGL:
@@ -319,19 +300,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   } else {
     switch (keycode) {
-      case M_CTRSF:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LCTL);
-        return false;
-
-      case M_ALTSF:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LALT);
-        return false;
-    }
-
-    if (shift_lock) {
-      unregister_code(KC_LSFT);
+      case LT_CURS:
+        if (shift_lock) {
+          shift_lock = false;
+          unregister_code(KC_LSFT);
+        }
     }
   }
 
