@@ -85,46 +85,13 @@ bool process_auto_shift(uint16_t keycode, keyrecord_t *record) {
         return false;
 
 #ifndef NO_AUTO_SHIFT_ALPHA
-      case KC_A:
-      case KC_B:
-      case KC_C:
-      case KC_D:
-      case KC_E:
-      case KC_F:
-      case KC_G:
-      case KC_H:
-      case KC_I:
-      case KC_J:
-      case KC_K:
-      case KC_L:
-      case KC_M:
-      case KC_N:
-      case KC_O:
-      case KC_P:
-      case KC_Q:
-      case KC_R:
-      case KC_S:
-      case KC_T:
-      case KC_U:
-      case KC_V:
-      case KC_W:
-      case KC_X:
-      case KC_Y:
-      case KC_Z:
+      case KC_A ... KC_Z:
 #endif
 #ifndef NO_AUTO_SHIFT_NUMERIC
-      case KC_1:
-      case KC_2:
-      case KC_3:
-      case KC_4:
-      case KC_5:
-      case KC_6:
-      case KC_7:
-      case KC_8:
-      case KC_9:
-      case KC_0:
+      case KC_1 ... KC_0:
 #endif
 #ifndef NO_AUTO_SHIFT_SPECIAL
+      case KC_GRV:
       case KC_MINUS:
       case KC_EQL:
       case KC_TAB:
