@@ -1,6 +1,11 @@
 #ifndef USER_CONFIG_H
 #define USER_CONFIG_H
 
+// #define RGBLIGHT_HUE_STEP 20
+// #define RGBLIGHT_EFFECT_SNAKE_LENGTH 5
+// #define RGBLIGHT_EFFECT_KNIGHT_LENGTH 4
+// #define RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL 500
+
 #include "../../config.h"
 
 #define LEADER_TIMEOUT 600
