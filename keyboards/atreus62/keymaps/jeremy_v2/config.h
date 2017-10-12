@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-#define AUTO_SHIFT_TIMEOUT 155
+#define AUTO_SHIFT_TIMEOUT 165
 #define PREVENT_STUCK_MODIFIERS
 #define PERMISSIVE_HOLD
 //#define TAPPING_TERM 100

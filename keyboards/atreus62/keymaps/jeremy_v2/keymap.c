@@ -81,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [QWER] = {
 	{KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    XXXXXXX, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS},
   {KC_LBRC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    XXXXXXX, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC},
-  {KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    XXXXXXX, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, TD_QUOT},
+  {KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    XXXXXXX, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT},
   {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MK_SFBS},
   {KC_LCTL, KC_LALT, KC_LGUI, M_INVTG, KC_TAB,  LT_CURS, KC_DELT, KC_ENT,  KC_ESC,  M_INVTG, KC_MENU, KC_RALT, KC_RCTL}
 },
@@ -115,14 +115,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 },
 [COLM] = {
 	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, KC_F,    KC_P,    KC_G,    _______, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______},
-	{_______, _______, KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, KC_N,    KC_E,    KC_I,    KC_O,    TD_QUOT},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
+	{_______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    _______, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______},
+	{_______, KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    _______, KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT},
+	{_______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______},
 	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [DVOR] = {
 	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, TD_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH},
+	{_______, KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH},
 	{_______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS},
 	{_______, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    _______, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______},
 	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
