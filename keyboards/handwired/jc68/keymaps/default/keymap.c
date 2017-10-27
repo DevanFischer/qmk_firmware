@@ -10,7 +10,7 @@ enum my_layers {
   L_DVORK,
   L_COLMK,
   L_MODDH,
-  L_CONFG
+  L_LOWER
 };
 
 enum my_keys {
@@ -71,13 +71,17 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define MK_V KC_V /*TD(TD_V_LCBR)*/
 #define MK_M KC_M /*TD(TD_M_RCBR)*/
 //#define MK_ENT TD(TD_END_ENT)
-#define MK_ENT  KC_ENT
+//#define MK_ENT  KC_ENT
+//#define MK_SPC  KC_SPC
+#define MK_ENT  SFT_T(KC_ENT)
+#define MK_SPC  SFT_T(KC_SPC)
 #define MK_LBRC TD(TD_END_LBRC_ENT)
 #define MK_COMM TD(TD_END_COMM_ENT)
 #define MK_WUP  LGUI(KC_UP)
 #define MK_WDN  LGUI(KC_DOWN)
 #define MK_WLF  LGUI(KC_LEFT)
 #define MK_WRT  LGUI(KC_RGHT)
+#define MK_LOWR MO(L_LOWER)
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -96,9 +100,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_QWERT] = KEYMAP(
     KC_ESC,  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,
     KC_HOME, KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC,
-    KC_END,  KC_LEAD, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_BSPC, KC_DELT, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSLS,
-    KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_UP,   KC_DOWN, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,
-             KC_LCTL, KC_LALT,          MK_CONF, KC_SPC,           KC_LEFT, KC_RGHT,          MK_ENT,  MK_CONF,          KC_RALT, KC_RCTL
+    KC_LGUI, MK_LOWR, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_UP,   KC_LEFT, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSLS,
+    KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_DOWN, KC_RGHT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,
+             KC_LCTL, KC_LALT,          KC_LSFT, MK_SPC,           KC_BSPC, KC_DELT,          MK_ENT,  KC_RSFT,          KC_RALT, KC_RCTL
   ),
   [L_DVORK] = KEYMAP(
     _______, _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, _______,
@@ -121,11 +125,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,          KC_Z,    KC_X,    KC_C,    KC_D,    MK_V,    _______, _______, MK_M,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,
              _______, _______,          _______, _______,          _______, _______,          _______, _______,          _______, _______
   ),
-  [L_CONFG] = KEYMAP(
+  [L_LOWER] = KEYMAP(
     _______, _______, QWERT,   DVORK,   COLMK,   MODDH,   _______,                   _______, _______, _______, _______, _______, _______, RESET,
     _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,                   _______, _______, _______, _______, _______, _______, _______,
-    _______, KC_DELT, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    TOGINVT,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          TOGINVT,
+    _______, _______, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______, KC_PGUP, KC_HOME, _______, _______, _______, _______, _______, _______, _______,
+    TOGINVT,          _______, _______, _______, _______, _______, KC_PGDN, KC_END,  _______, _______, _______, _______, _______,          TOGINVT,
              _______, _______,          _______, _______,          _______, _______,          _______, _______,          _______, _______
   ),
 };

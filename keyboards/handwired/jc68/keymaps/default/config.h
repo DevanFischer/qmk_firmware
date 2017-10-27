@@ -3,7 +3,8 @@
 
 #include "../../config.h"
 
-#define LEADER_TIMEOUT 300
 #define PREVENT_STUCK_MODIFIERS
+#define IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_FORCE_HOLD
 
 #endif
