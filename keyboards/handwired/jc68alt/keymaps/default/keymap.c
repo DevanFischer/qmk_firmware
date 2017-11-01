@@ -4,12 +4,16 @@
 #define EECONFIG_MY_DO_INVERT (uint8_t *)32
 
 bool doInvert = false;
+bool isSpaceDown = false;
+bool isEnterDown = false;
+bool wasTwoShift = false;
 
 enum my_layers {
   L_QWERT = 0,
   L_DVORK,
   L_COLMK,
   L_MODDH,
+  L_NAV,
   L_LOWER
 };
 
@@ -25,9 +29,13 @@ enum my_keys {
 #define XXXXXXX KC_NO
 
 #define MK_LOWR MO(L_LOWER)
+#define MK_NAV MO(L_NAV)
 #define MK_CTL CTL_T(KC_ESC)
 #define MK_TAB CTL_T(KC_TAB)
 #define MK_QUOT CTL_T(KC_QUOT)
+
+#define TAP_KEY(keycode) register_code(keycode); unregister_code(keycode)
+#define TAP_MODKEY(mod, keycode) register_code(mod); register_code(keycode); unregister_code(keycode); unregister_code(mod)
 
 /*
   [EMPT] = KEYMAP(
@@ -46,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
     MK_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_QUOT,
     KC_BSLS, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
-    MK_CTL,  KC_LALT, KC_PGUP,          KC_LSFT, KC_SPC, KC_BSPC, KC_DELT,  KC_ENT,  KC_RSFT,          KC_UP,   KC_RALT, MK_CTL,
+    MK_CTL,  KC_LALT, KC_PGUP,          MK_NAV,  KC_SPC, KC_BSPC, KC_DELT,  KC_ENT,  KC_RSFT,          KC_UP,   KC_RALT, MK_CTL,
     KC_LGUI, KC_HOME, KC_PGDN, KC_END,                                                        KC_LEFT, KC_DOWN, KC_RGHT, MK_LOWR
   ),
   [L_DVORK] = KEYMAP(
@@ -70,6 +78,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                      KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
     _______, KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                      KC_K,    KC_N,    KC_E,    KC_I,    KC_O,    _______,
     _______, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                      KC_M,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, _______,
+    _______, _______, _______,          _______, _______, _______, _______, _______, _______,          _______, _______, _______,
+    _______, _______, _______, _______,                                                       _______, _______, _______, _______
+  ),
+  [L_NAV] = KEYMAP(
+    _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______,                   _______, KC_HOME, KC_UP,   KC_END,  KC_MPRV, KC_VOLU,
+    _______, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______,                   KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_MPLY, KC_VOLD,
+    _______, _______, _______, _______, _______, _______,                   KC_PGDN, _______, _______, _______, KC_MNXT, KC_MUTE,
     _______, _______, _______,          _______, _______, _______, _______, _______, _______,          _______, _______, _______,
     _______, _______, _______, _______,                                                       _______, _______, _______, _______
   ),
@@ -112,6 +128,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         persistent_default_layer_set(1UL << L_MODDH);
         return false;
 
+      case KC_SPC:
+        isSpaceDown = true;
+
+        wasTwoShift = isSpaceDown && isEnterDown;
+
+        if (wasTwoShift) {
+          register_code(KC_LSFT);
+        }
+
+        return false;
+
+      case KC_ENT:
+        isEnterDown = true;
+
+        wasTwoShift = isSpaceDown && isEnterDown;
+
+        if (wasTwoShift) {
+          register_code(KC_LSFT);
+        }
+
+        return false;
+
       case TOGINVT:
         doInvert = !doInvert;
         eeprom_update_byte(EECONFIG_MY_DO_INVERT, doInvert ? 1 : 0);
@@ -147,6 +185,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         return true;
       }
+  } else {
+    switch (keycode) {
+      case KC_SPC:
+        if (wasTwoShift == false) {
+          TAP_KEY(KC_SPC);
+        } else if (isEnterDown == false) {
+          wasTwoShift = false;
+
+          unregister_code(KC_LSFT);
+        }
+
+        isSpaceDown = false;
+
+        return false;
+
+      case KC_ENT:
+        if (wasTwoShift == false) {
+          TAP_KEY(KC_ENT);
+        } else if (isSpaceDown == false) {
+          wasTwoShift = false;
+
+          unregister_code(KC_LSFT);
+        }
+
+        isEnterDown = false;
+
+        return false;
+    }
   }
 
   return true;
