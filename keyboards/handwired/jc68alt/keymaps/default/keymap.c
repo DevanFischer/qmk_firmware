@@ -6,7 +6,8 @@
 bool doInvert = false;
 bool isSpaceDown = false;
 bool isEnterDown = false;
-bool wasTwoShift = false;
+bool doingDelete = false;
+bool doingBackspace = false;
 
 enum my_layers {
   L_QWERT = 0,
@@ -29,9 +30,13 @@ enum my_keys {
 #define XXXXXXX KC_NO
 
 #define MK_LOWR MO(L_LOWER)
-#define MK_NAV MO(L_NAV)
-#define MK_CTL CTL_T(KC_ESC)
-#define MK_TAB CTL_T(KC_TAB)
+#define MK_NAV  MO(L_NAV)
+
+#define MK_GRV  CTL_T(KC_GRV)
+#define MK_BSLS ALT_T(KC_BSLS)
+#define MK_Z    GUI_T(KC_Z)
+#define MK_SLSH GUI_T(KC_SLSH)
+#define MK_RBRC ALT_T(KC_RBRC)
 #define MK_QUOT CTL_T(KC_QUOT)
 
 #define TAP_KEY(keycode) register_code(keycode); unregister_code(keycode)
@@ -51,11 +56,11 @@ enum my_keys {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_QWERT] = KEYMAP(
     KC_EQL,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
-    KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-    MK_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_QUOT,
-    KC_BSLS, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
-    MK_CTL,  KC_LALT, KC_PGUP,          MK_NAV,  KC_SPC, KC_BSPC, KC_DELT,  KC_ENT,  KC_RSFT,          KC_UP,   KC_RALT, MK_CTL,
-    KC_LGUI, KC_HOME, KC_PGDN, KC_END,                                                        KC_LEFT, KC_DOWN, KC_RGHT, MK_LOWR
+    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
+    MK_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_QUOT,
+    MK_BSLS, MK_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  MK_SLSH, MK_RBRC,
+    _______, _______, _______,          KC_LSFT, KC_SPC, MK_NAV,  MK_LOWR,  KC_ENT,  KC_RSFT,          _______, _______, _______,
+    _______, _______, _______, _______,                                                       _______, _______, _______, _______
   ),
   [L_DVORK] = KEYMAP(
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
@@ -77,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                      KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
     _______, KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                      KC_K,    KC_N,    KC_E,    KC_I,    KC_O,    _______,
-    _______, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                      KC_M,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, _______,
+    _______, MK_Z,    KC_X,    KC_C,    KC_D,    KC_V,                      KC_M,    KC_H,    KC_COMM, KC_DOT,  MK_SLSH, _______,
     _______, _______, _______,          _______, _______, _______, _______, _______, _______,          _______, _______, _______,
     _______, _______, _______, _______,                                                       _______, _______, _______, _______
   ),
@@ -92,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_LOWER] = KEYMAP(
     _______, QWERT,   DVORK,   COLMK,   MODDH,   _______,                   _______, _______, _______, _______, _______, RESET,
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
-    _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,                   _______, _______, _______, _______, _______, _______,
+    KC_ESC,  KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, _______, _______,          TOGINVT, _______, _______, _______, _______, TOGINVT,          _______, _______, _______,
     _______, _______, _______, _______,                                                       _______, _______, _______, _______
@@ -131,10 +136,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_SPC:
         isSpaceDown = true;
 
-        wasTwoShift = isSpaceDown && isEnterDown;
-
-        if (wasTwoShift) {
-          register_code(KC_LSFT);
+        if (isSpaceDown && isEnterDown) {
+          doingBackspace = true;
+          register_code(KC_BSPC);
         }
 
         return false;
@@ -142,10 +146,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_ENT:
         isEnterDown = true;
 
-        wasTwoShift = isSpaceDown && isEnterDown;
-
-        if (wasTwoShift) {
-          register_code(KC_LSFT);
+        if (isSpaceDown && isEnterDown) {
+          doingDelete = true;
+          register_code(KC_DELT);
         }
 
         return false;
@@ -188,12 +191,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   } else {
     switch (keycode) {
       case KC_SPC:
-        if (wasTwoShift == false) {
+        if (doingDelete == false && doingBackspace == false) {
           TAP_KEY(KC_SPC);
-        } else if (isEnterDown == false) {
-          wasTwoShift = false;
-
-          unregister_code(KC_LSFT);
+        } else if (doingBackspace) {
+          unregister_code(KC_BSPC);
+          doingBackspace = isEnterDown;
+        } else if (doingDelete) {
+          unregister_code(KC_DELT);
+          doingDelete = isEnterDown;
         }
 
         isSpaceDown = false;
@@ -201,12 +206,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
 
       case KC_ENT:
-        if (wasTwoShift == false) {
+        if (doingDelete == false && doingBackspace == false) {
           TAP_KEY(KC_ENT);
-        } else if (isSpaceDown == false) {
-          wasTwoShift = false;
-
-          unregister_code(KC_LSFT);
+        } else if (doingBackspace) {
+          unregister_code(KC_BSPC);
+          doingBackspace = isSpaceDown;
+        } else if (doingDelete) {
+          unregister_code(KC_DELT);
+          doingDelete = isSpaceDown;
         }
 
         isEnterDown = false;
