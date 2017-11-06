@@ -1,13 +1,12 @@
 #include "jc54.h"
+#include "users/jcowgar/macros.h"
+#include "users/jcowgar/rolling_bspc_delt.c"
+
 #include "eeconfig.h"
 
 #define EECONFIG_MY_DO_INVERT (uint8_t *)32
 
 bool doInvert = false;
-bool isSpaceDown = false;
-bool isEnterDown = false;
-bool doingDelete = false;
-bool doingBackspace = false;
 
 enum my_layers {
   L_QWERT = 0,
@@ -38,9 +37,6 @@ enum my_keys {
 #define MK_SLSH GUI_T(KC_SLSH)
 #define MK_RBRC ALT_T(KC_RBRC)
 #define MK_QUOT CTL_T(KC_QUOT)
-
-#define TAP_KEY(keycode) register_code(keycode); unregister_code(keycode)
-#define TAP_MODKEY(mod, keycode) register_code(mod); register_code(keycode); unregister_code(keycode); unregister_code(mod)
 
 /*
   [L_EMPTY] = KEYMAP(
@@ -86,17 +82,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_MPRV, KC_VOLU,
     _______, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_MPLY, KC_VOLD,
     _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, KC_MNXT, KC_MUTE,
-                               TOGINVT, _______, _______, _______, _______, TOGINVT
+                               _______, _______, _______, _______, _______, _______
   ),
   [L_LOWER] = KEYMAP(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, KC_BTN1, KC_MS_U, KC_BTN2, _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______, KC_WH_U, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
-    _______, _______, _______, _______, _______, _______, KC_WH_D, _______, _______, _______, _______, _______,
-                               _______, _______, _______, _______, _______, _______
+    KC_ESC,  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_U, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
+    _______, _______, _______, _______, _______, KC_WH_D, _______, _______, _______, _______, _______, _______,
+                               TOGINVT, _______, _______, _______, _______, TOGINVT
   ),
 };
-
 
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
@@ -108,6 +103,10 @@ void matrix_init_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (process_rolling_bspc_delt(keycode, record) == false) {
+    return false;
+  }
+
   if (record->event.pressed) {
     switch (keycode) {
       case QWERT:
@@ -124,26 +123,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
       case MODDH:
         persistent_default_layer_set(1UL << L_MODDH);
-        return false;
-
-      case KC_SPC:
-        isSpaceDown = true;
-
-        if (isSpaceDown && isEnterDown) {
-          doingBackspace = true;
-          register_code(KC_BSPC);
-        }
-
-        return false;
-
-      case KC_ENT:
-        isEnterDown = true;
-
-        if (isSpaceDown && isEnterDown) {
-          doingDelete = true;
-          register_code(KC_DELT);
-        }
-
         return false;
 
       case TOGINVT:
@@ -165,15 +144,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
 
           if (mod_code != KC_NO) {
-            unregister_code(mod_code);
-            register_code(keycode);
-            unregister_code(keycode);
-            register_code(mod_code);
+            TAP_MODKEY(mod_code, keycode);
           } else {
-            register_code(KC_LSFT);
-            register_code(keycode);
-            unregister_code(keycode);
-            unregister_code(KC_LSFT);
+            TAP_MODKEY(KC_LSFT, keycode);
           }
 
           return false;
@@ -181,38 +154,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         return true;
       }
-  } else {
-    switch (keycode) {
-      case KC_SPC:
-        if (doingDelete == false && doingBackspace == false) {
-          TAP_KEY(KC_SPC);
-        } else if (doingBackspace) {
-          unregister_code(KC_BSPC);
-          doingBackspace = isEnterDown;
-        } else if (doingDelete) {
-          unregister_code(KC_DELT);
-          doingDelete = isEnterDown;
-        }
-
-        isSpaceDown = false;
-
-        return false;
-
-      case KC_ENT:
-        if (doingDelete == false && doingBackspace == false) {
-          TAP_KEY(KC_ENT);
-        } else if (doingBackspace) {
-          unregister_code(KC_BSPC);
-          doingBackspace = isSpaceDown;
-        } else if (doingDelete) {
-          unregister_code(KC_DELT);
-          doingDelete = isSpaceDown;
-        }
-
-        isEnterDown = false;
-
-        return false;
-    }
   }
 
   return true;
