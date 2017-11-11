@@ -1,5 +1,7 @@
 #include "rolling_bspc_delt.h"
 
+bool iDidEnterDown = false;
+bool iDidSpaceDown = false;
 bool isSpaceDown = false;
 bool isEnterDown = false;
 bool doingDelete = false;
@@ -9,6 +11,7 @@ bool process_rolling_bspc_delt(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch (keycode) {
       case KC_SPC:
+        iDidSpaceDown = true;
         isSpaceDown = true;
 
         if (isSpaceDown && isEnterDown) {
@@ -20,6 +23,7 @@ bool process_rolling_bspc_delt(uint16_t keycode, keyrecord_t *record) {
 
       case KC_ENT:
         isEnterDown = true;
+        iDidEnterDown = true;
 
         if (isSpaceDown && isEnterDown) {
           doingDelete = true;
@@ -31,7 +35,8 @@ bool process_rolling_bspc_delt(uint16_t keycode, keyrecord_t *record) {
   } else {
     switch (keycode) {
       case KC_SPC:
-        if (doingDelete == false && doingBackspace == false) {
+        if (doingDelete == false && doingBackspace == false && iDidSpaceDown) {
+          iDidSpaceDown = false;
           TAP_KEY(KC_SPC);
         } else if (doingBackspace) {
           unregister_code(KC_BSPC);
@@ -46,7 +51,8 @@ bool process_rolling_bspc_delt(uint16_t keycode, keyrecord_t *record) {
         return false;
 
       case KC_ENT:
-        if (doingDelete == false && doingBackspace == false) {
+        if (doingDelete == false && doingBackspace == false && iDidEnterDown) {
+          iDidEnterDown = false;
           TAP_KEY(KC_ENT);
         } else if (doingBackspace) {
           unregister_code(KC_BSPC);
