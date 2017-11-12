@@ -1,6 +1,10 @@
 #include "jc54.h"
+
+#define UNDER_CAMEL_TERMINATE_ON_ENTER
+
 #include "users/jcowgar/macros.h"
 #include "users/jcowgar/rolling_bspc_delt.c"
+#include "users/jcowgar/under_camel.c"
 
 #include "eeconfig.h"
 
@@ -103,6 +107,10 @@ void matrix_init_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (process_under_camel(keycode, record) == false) {
+    return false;
+  }
+
   if (process_rolling_bspc_delt(keycode, record) == false) {
     return false;
   }
