@@ -7,8 +7,16 @@ void uc_set_under(bool value) {
   isUnder = value;
 }
 
+void uc_toggle_under(void) {
+  isUnder = !isUnder;
+}
+
 void uc_set_camel(bool value) {
   isCamel = value;
+}
+
+void uc_toggle_camel(void) {
+  isCamel = !isCamel;
 }
 
 bool process_under_camel(uint16_t keycode, keyrecord_t *record) {
