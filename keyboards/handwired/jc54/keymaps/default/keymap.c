@@ -18,7 +18,7 @@ enum my_layers {
   L_COLMK,
   L_MODDH,
   L_NAV,
-  L_LOWER
+  L_PROGM
 };
 
 enum my_keys {
@@ -27,15 +27,35 @@ enum my_keys {
   COLMK,
   MODDH,
   TOGINVT,
+  JC_OPNA,
+  JC_OPNB,
+  JC_OPNF,
+  JC_OPNC,
+  JC_NEQ,
+  JC_NDEQ,
+  JC_LTEQ,
+  JC_GTEQ,
+  JC_EQGT,
+  JC_EQGF,
+  JC_DEQ,
+  JC_TEQ,
+  JC_PEQ,
+  JC_MEQ,
+  JC_DFOC,
+  JC_HTOP,
+  JC_HTCL,
+  JC_DOR,
+  JC_DAND,
 };
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
 
-#define MK_LOWR MO(L_LOWER)
-#define MK_NAV  MO(L_NAV)
+#define MK_PROG LT(L_PROGM, KC_DELT)
+#define MK_NAV  LT(L_NAV, KC_BSPC)
 
 #define MK_GRV  CTL_T(KC_GRV)
+#define MK_ESC  CTL_T(KC_ESC)
 #define MK_BSLS ALT_T(KC_BSLS)
 #define MK_Z    GUI_T(KC_Z)
 #define MK_SLSH GUI_T(KC_SLSH)
@@ -58,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
     MK_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_QUOT,
     MK_BSLS, MK_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  MK_SLSH, MK_RBRC,
-                               KC_LSFT, KC_SPC, MK_NAV,  MK_LOWR,  KC_ENT,  KC_RSFT
+                               KC_LSFT, KC_SPC,  MK_NAV,  MK_PROG, KC_ENT,  KC_RSFT
   ),
   [L_DVORK] = KEYMAP(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -88,11 +108,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, KC_MNXT, KC_MUTE,
                                _______, _______, _______, _______, _______, _______
   ),
-  [L_LOWER] = KEYMAP(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, KC_BTN1, KC_MS_U, KC_BTN2, _______, _______, _______, _______, _______, _______, _______,
-    KC_ESC,  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_U, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
-    _______, _______, _______, _______, _______, KC_WH_D, _______, _______, _______, _______, _______, _______,
+  [L_PROGM] = KEYMAP(
+    _______, _______, KC_LABK, KC_RABK, JC_NEQ,  JC_NDEQ, _______, _______, _______, _______, _______, _______,
+    _______, _______, KC_LCBR, KC_RCBR, JC_LTEQ, JC_GTEQ, _______, _______, _______, _______, _______, _______,
+    MK_ESC,  JC_DAND, KC_LPRN, KC_RPRN, JC_DEQ,  JC_TEQ,  JC_EQGT, JC_OPNA, JC_OPNB, JC_OPNF, JC_OPNC, JC_DFOC,
+    _______, JC_DOR,  KC_LBRC, KC_RBRC, JC_PEQ,  JC_MEQ,  JC_EQGF, _______, JC_HTOP, JC_HTCL, _______, _______,
                                TOGINVT, _______, _______, _______, _______, TOGINVT
   ),
 };
@@ -111,9 +131,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
-  if (process_rolling_bspc_delt(keycode, record) == false) {
-    return false;
-  }
+  // if (process_rolling_bspc_delt(keycode, record) == false) {
+  //   return false;
+  // }
 
   if (record->event.pressed) {
     switch (keycode) {
@@ -136,6 +156,82 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case TOGINVT:
         doInvert = !doInvert;
         eeprom_update_byte(EECONFIG_MY_DO_INVERT, doInvert ? 1 : 0);
+        return false;
+
+      case JC_OPNA:
+        SEND_STRING(SS_TAP(X_UP)SS_TAP(X_END)"\n");
+        return false;
+
+      case JC_OPNB:
+        SEND_STRING(SS_TAP(X_END)"\n");
+        return false;
+
+      case JC_OPNF:
+        SEND_STRING(SS_TAP(X_END)" {\n");
+        return false;
+
+      case JC_OPNC:
+        SEND_STRING(SS_TAP(X_END)",\n");
+        return false;
+
+      case JC_NEQ:
+        SEND_STRING("!=");
+        return false;
+
+      case JC_NDEQ:
+        SEND_STRING("!==");
+        return false;
+
+      case JC_LTEQ:
+        SEND_STRING("<=");
+        return false;
+
+      case JC_GTEQ:
+        SEND_STRING(">=");
+        return false;
+
+      case JC_DEQ:
+        SEND_STRING("==");
+        return false;
+
+      case JC_TEQ:
+        SEND_STRING("===");
+        return false;
+
+      case JC_PEQ:
+        SEND_STRING("+=");
+        return false;
+
+      case JC_MEQ:
+        SEND_STRING("-=");
+        return false;
+
+      case JC_DOR:
+        SEND_STRING("||");
+        return false;
+
+      case JC_DAND:
+        SEND_STRING("&&");
+        return false;
+
+      case JC_EQGT:
+        SEND_STRING("=>");
+        return false;
+
+      case JC_EQGF:
+        SEND_STRING("=> {\n");
+        return false;
+
+      case JC_DFOC:
+        SEND_STRING("${}"SS_TAP(X_LEFT));
+        return false;
+
+      case JC_HTOP:
+        SEND_STRING("<>"SS_TAP(X_LEFT));
+        return false;
+
+      case JC_HTCL:
+        SEND_STRING("</>"SS_TAP(X_LEFT));
         return false;
 
       case KC_1 ... KC_0:
