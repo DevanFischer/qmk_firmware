@@ -63,7 +63,7 @@ enum my_keys {
 #define MK_QUOT CTL_T(KC_QUOT)
 
 /*
-  [L_EMPTY] = KEYMAP(
+  [L_EMPTY] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -73,42 +73,42 @@ enum my_keys {
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [L_QWERT] = KEYMAP(
+  [L_QWERT] = LAYOUT(
     KC_EQL,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
     MK_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_QUOT,
-    MK_BSLS, MK_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, KC_N,    KC_M,    KC_COMM, KC_DOT,  MK_SLSH, MK_RBRC,
+    MK_BSLS, MK_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_HOME, KC_END,  KC_N,    KC_M,    KC_COMM, KC_DOT,  MK_SLSH, MK_RBRC,
                                KC_LSFT, KC_SPC,  MK_NAV,                    MK_PROG, KC_ENT,  KC_RSFT
   ),
-  [L_DVORK] = KEYMAP(
+  [L_DVORK] = LAYOUT(
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                _______, _______, _______,                   _______, _______, _______
   ),
-  [L_COLMK] = KEYMAP(
+  [L_COLMK] = LAYOUT(
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                      KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
     _______, KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                      KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    _______,
     _______, MK_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, KC_K,    KC_M,    KC_COMM, KC_DOT,  MK_SLSH, _______,
                                _______, _______, _______,                   _______, _______, _______
   ),
-  [L_MODDH] = KEYMAP(
+  [L_MODDH] = LAYOUT(
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
     _______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                      KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
     _______, KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                      KC_K,    KC_N,    KC_E,    KC_I,    KC_O,    _______,
     _______, MK_Z,    KC_X,    KC_C,    KC_D,    KC_V,    _______, _______, KC_M,    KC_H,    KC_COMM, KC_DOT,  MK_SLSH, _______,
                                _______, _______, _______,                   _______, _______, _______
   ),
-  [L_NAV] = KEYMAP(
+  [L_NAV] = LAYOUT(
     _______, QWERT,   DVORK,   COLMK,   MODDH,   _______,                   _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______,                   _______, KC_HOME, KC_UP,   KC_END,  KC_MPRV, KC_VOLU,
     _______, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______,                   KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_MPLY, KC_VOLD,
     _______, _______, _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, KC_MNXT, KC_MUTE,
                                _______, _______, _______,                   _______, _______, _______
   ),
-  [L_PROGM] = KEYMAP(
+  [L_PROGM] = LAYOUT(
     _______, _______, KC_LABK, KC_RABK, JC_NEQ,  JC_NDEQ,                   _______, _______, _______, _______, _______, _______,
     _______, _______, KC_LCBR, KC_RCBR, JC_LTEQ, JC_GTEQ,                   _______, _______, _______, _______, _______, _______,
     MK_ESC,  JC_DAND, KC_LPRN, KC_RPRN, JC_DEQ,  JC_TEQ,                    JC_EQGT, JC_OPNA, JC_OPNB, JC_OPNF, JC_OPNC, JC_DFOC,
@@ -118,147 +118,146 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void persistent_default_layer_set(uint16_t default_layer) {
-  // eeconfig_update_default_layer(default_layer);
-  default_layer_set(default_layer);
+  set_single_persistent_default_layer(default_layer);
 }
 
-void matrix_init_user(void) {
-  // doInvert = eeprom_read_byte(EECONFIG_MY_DO_INVERT) == 1;
-}
+// void matrix_init_user(void) {
+//   // doInvert = eeprom_read_byte(EECONFIG_MY_DO_INVERT) == 1;
+// }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (process_under_camel(keycode, record) == false) {
-    return false;
-  }
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//   if (process_under_camel(keycode, record) == false) {
+//     return false;
+//   }
 
-  // if (process_rolling_bspc_delt(keycode, record) == false) {
-  //   return false;
-  // }
+//   // if (process_rolling_bspc_delt(keycode, record) == false) {
+//   //   return false;
+//   // }
 
-  if (record->event.pressed) {
-    switch (keycode) {
-      case QWERT:
-        persistent_default_layer_set(1UL << L_QWERT);
-        return false;
+//   if (record->event.pressed) {
+//     switch (keycode) {
+//       case QWERT:
+//         persistent_default_layer_set(1UL << L_QWERT);
+//         return false;
 
-      case DVORK:
-        persistent_default_layer_set(1UL << L_DVORK);
-        return false;
+//       case DVORK:
+//         persistent_default_layer_set(1UL << L_DVORK);
+//         return false;
 
-      case COLMK:
-        persistent_default_layer_set(1UL << L_COLMK);
-        return false;
+//       case COLMK:
+//         persistent_default_layer_set(1UL << L_COLMK);
+//         return false;
 
-      case MODDH:
-        persistent_default_layer_set(1UL << L_MODDH);
-        return false;
+//       case MODDH:
+//         persistent_default_layer_set(1UL << L_MODDH);
+//         return false;
 
-      case TOGINVT:
-        doInvert = !doInvert;
-        // eeprom_update_byte(EECONFIG_MY_DO_INVERT, doInvert ? 1 : 0);
-        return false;
+//       case TOGINVT:
+//         doInvert = !doInvert;
+//         // eeprom_update_byte(EECONFIG_MY_DO_INVERT, doInvert ? 1 : 0);
+//         return false;
 
-      case JC_OPNA:
-        SEND_STRING(SS_TAP(X_UP)SS_TAP(X_END)"\n");
-        return false;
+//       case JC_OPNA:
+//         SEND_STRING(SS_TAP(X_UP)SS_TAP(X_END)"\n");
+//         return false;
 
-      case JC_OPNB:
-        SEND_STRING(SS_TAP(X_END)"\n");
-        return false;
+//       case JC_OPNB:
+//         SEND_STRING(SS_TAP(X_END)"\n");
+//         return false;
 
-      case JC_OPNF:
-        SEND_STRING(SS_TAP(X_END)" {\n");
-        return false;
+//       case JC_OPNF:
+//         SEND_STRING(SS_TAP(X_END)" {\n");
+//         return false;
 
-      case JC_OPNC:
-        SEND_STRING(SS_TAP(X_END)",\n");
-        return false;
+//       case JC_OPNC:
+//         SEND_STRING(SS_TAP(X_END)",\n");
+//         return false;
 
-      case JC_NEQ:
-        SEND_STRING("!=");
-        return false;
+//       case JC_NEQ:
+//         SEND_STRING("!=");
+//         return false;
 
-      case JC_NDEQ:
-        SEND_STRING("!==");
-        return false;
+//       case JC_NDEQ:
+//         SEND_STRING("!==");
+//         return false;
 
-      case JC_LTEQ:
-        SEND_STRING("<=");
-        return false;
+//       case JC_LTEQ:
+//         SEND_STRING("<=");
+//         return false;
 
-      case JC_GTEQ:
-        SEND_STRING(">=");
-        return false;
+//       case JC_GTEQ:
+//         SEND_STRING(">=");
+//         return false;
 
-      case JC_DEQ:
-        SEND_STRING("==");
-        return false;
+//       case JC_DEQ:
+//         SEND_STRING("==");
+//         return false;
 
-      case JC_TEQ:
-        SEND_STRING("===");
-        return false;
+//       case JC_TEQ:
+//         SEND_STRING("===");
+//         return false;
 
-      case JC_PEQ:
-        SEND_STRING("+=");
-        return false;
+//       case JC_PEQ:
+//         SEND_STRING("+=");
+//         return false;
 
-      case JC_MEQ:
-        SEND_STRING("-=");
-        return false;
+//       case JC_MEQ:
+//         SEND_STRING("-=");
+//         return false;
 
-      case JC_DOR:
-        SEND_STRING("||");
-        return false;
+//       case JC_DOR:
+//         SEND_STRING("||");
+//         return false;
 
-      case JC_DAND:
-        SEND_STRING("&&");
-        return false;
+//       case JC_DAND:
+//         SEND_STRING("&&");
+//         return false;
 
-      case JC_EQGT:
-        SEND_STRING("=>");
-        return false;
+//       case JC_EQGT:
+//         SEND_STRING("=>");
+//         return false;
 
-      case JC_EQGF:
-        SEND_STRING("=> {\n");
-        return false;
+//       case JC_EQGF:
+//         SEND_STRING("=> {\n");
+//         return false;
 
-      case JC_DFOC:
-        SEND_STRING("${}"SS_TAP(X_LEFT));
-        return false;
+//       case JC_DFOC:
+//         SEND_STRING("${}"SS_TAP(X_LEFT));
+//         return false;
 
-      case JC_HTOP:
-        SEND_STRING("<>"SS_TAP(X_LEFT));
-        return false;
+//       case JC_HTOP:
+//         SEND_STRING("<>"SS_TAP(X_LEFT));
+//         return false;
 
-      case JC_HTCL:
-        SEND_STRING("</>"SS_TAP(X_LEFT));
-        return false;
+//       case JC_HTCL:
+//         SEND_STRING("</>"SS_TAP(X_LEFT));
+//         return false;
 
-      case KC_1 ... KC_0:
-      case KC_LBRC:
-      case KC_RBRC:
-      case KC_BSLS:
-        if (doInvert) {
-          uint16_t mod_code = KC_NO;
+//       case KC_1 ... KC_0:
+//       case KC_LBRC:
+//       case KC_RBRC:
+//       case KC_BSLS:
+//         if (doInvert) {
+//           uint16_t mod_code = KC_NO;
 
-          if (get_mods() & MOD_BIT(KC_LSFT)) {
-            mod_code = KC_LSFT;
-          } else if (get_mods() & MOD_BIT(KC_RSFT)) {
-            mod_code = KC_RSFT;
-          }
+//           if (get_mods() & MOD_BIT(KC_LSFT)) {
+//             mod_code = KC_LSFT;
+//           } else if (get_mods() & MOD_BIT(KC_RSFT)) {
+//             mod_code = KC_RSFT;
+//           }
 
-          if (mod_code != KC_NO) {
-            TAP_MODKEY(mod_code, keycode);
-          } else {
-            TAP_MODKEY(KC_LSFT, keycode);
-          }
+//           if (mod_code != KC_NO) {
+//             TAP_MODKEY(mod_code, keycode);
+//           } else {
+//             TAP_MODKEY(KC_LSFT, keycode);
+//           }
 
-          return false;
-        }
+//           return false;
+//         }
 
-        return true;
-      }
-  }
+//         return true;
+//       }
+//   }
 
-  return true;
-}
+//   return true;
+// }
