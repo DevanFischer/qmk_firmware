@@ -102,8 +102,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                _______, _______, _______, _______, _______, _______
   ),
   [L_NAV] = KEYMAP(
-    _______, QWERT,   DVORK,   COLMK,   MODDH,   _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_MPRV, KC_VOLU,
+    KC_F11,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+    KC_F12,  QWERT,   DVORK,   COLMK,   MODDH,   _______, _______, KC_HOME, KC_UP,   KC_END,  KC_MPRV, KC_VOLU,
     _______, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_MPLY, KC_VOLD,
     _______, _______, _______, _______, _______, _______, KC_PGDN, _______, _______, _______, KC_MNXT, KC_MUTE,
                                _______, _______, _______, _______, _______, _______
