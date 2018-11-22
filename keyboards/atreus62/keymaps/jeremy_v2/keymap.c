@@ -11,6 +11,7 @@ enum {
   COLM,     // Colemak
   DVOR,     // Dvorak
   CURS,     // Cursor Navigation
+  PROG,     // Programming
   CNFG      // Config
 };
 
@@ -36,11 +37,8 @@ enum {
   DL_DVOR
 };
 
-enum tap_dancing {
-  TD_QUOTE_GRV
-};
-
 #define LT_CURS LT(CURS, KC_SPC)
+#define LT_ENTP LT(PROG, KC_ENT)
 #define LT_CNFG MO(CNFG)
 #define TD_QUOT TD(TD_QUOTE_GRV)
 
@@ -69,77 +67,84 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 /*
 [BLANK] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [QWER] = {
-	{KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    XXXXXXX, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS},
+  {KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    XXXXXXX, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS},
   {KC_LBRC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    XXXXXXX, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC},
   {KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    XXXXXXX, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT},
   {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MK_SFBS},
-  {KC_LCTL, KC_LALT, KC_LGUI, M_INVTG, KC_TAB,  LT_CURS, KC_DELT, KC_ENT,  KC_ESC,  M_INVTG, KC_MENU, KC_RALT, KC_RCTL}
+  {KC_LCTL, KC_LALT, KC_LGUI, M_INVTG, KC_TAB,  LT_CURS, KC_DELT, LT_ENTP, KC_ESC,  M_INVTG, KC_MENU, KC_RALT, KC_RCTL}
 },
 [TAR1] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, KC_J,    _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_N,    KC_E,    _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, KC_J,    _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, KC_N,    KC_E,    _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [TAR2] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, KC_F,    _______, KC_G,    _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, _______, KC_T,    KC_J,    _______, _______, KC_N,    KC_E,    _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, KC_F,    _______, KC_G,    _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, KC_T,    KC_J,    _______, _______, KC_N,    KC_E,    _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [TAR3] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, KC_F,    KC_J,    KC_G,    _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, KC_N,    KC_E,    _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, KC_F,    KC_J,    KC_G,    _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, KC_N,    KC_E,    _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [TAR4] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, _______, _______, KC_F,    KC_P,    KC_G,    _______, KC_J,    _______, _______, KC_Y,    KC_SCLN, _______},
-	{_______, _______, KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, KC_N,    KC_E,    _______, KC_O,    _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, KC_F,    KC_P,    KC_G,    _______, KC_J,    _______, _______, KC_Y,    KC_SCLN, _______},
+  {_______, _______, KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, KC_N,    KC_E,    _______, KC_O,    _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, KC_K,    _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [COLM] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    _______, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______},
-	{_______, KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    _______, KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT},
-	{_______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    _______, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______},
+  {_______, KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    _______, KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT},
+  {_______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [DVOR] = {
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-	{_______, KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH},
-	{_______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS},
-	{_______, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    _______, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______},
-	{_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+  {_______, KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    _______, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_SLSH},
+  {_______, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    _______, KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS},
+  {_______, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    _______, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    _______},
+  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
 },
 [CURS] = {
-	{KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   XXXXXXX, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12},
-	{XXXXXXX, M_SFLK,  KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_COPY, XXXXXXX},
-	{XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_CUT,  XXXXXXX},
-	{_______, XXXXXXX, KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_PASTE,XXXXXXX, XXXXXXX},
-	{_______, XXXXXXX, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, LT_CNFG, RESET},
+  {KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   XXXXXXX, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  XXXXXXX, KC_VOLU},
+  {XXXXXXX, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, KC_VOLD},
+  {M_SFLK,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE},
+  {_______, XXXXXXX, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, LT_CNFG, RESET},
+},
+[PROG] = {
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {XXXXXXX, KC_LBRC, KC_RBRC, KC_LPRN, KC_RPRN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {XXXXXXX, KC_GRV,  KC_DLR,  KC_LCBR, KC_RCBR, XXXXXXX, XXXXXXX, KC_EQL,  KC_PLUS, KC_MINS, KC_ASTR, KC_SLSH, XXXXXXX},
+  {XXXXXXX, M_DPIP,  M_DAMP,  KC_AMPR, KC_PIPE, XXXXXXX, XXXXXXX, XXXXXXX, KC_EXLM, KC_LABK, KC_RABK, XXXXXXX, XXXXXXX},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
 },
 [CNFG] = {
-	{XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
-	{XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASUP},
-	{XXXXXXX, DL_QWER, DL_COLM, DL_DVOR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASDN},
-	{XXXXXXX, DL_TAR1, DL_TAR2, DL_TAR3, DL_TAR4, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASRP},
-	{XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, AG_NORM, XXXXXXX, XXXXXXX, XXXXXXX, AG_SWAP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASUP},
+  {XXXXXXX, DL_QWER, DL_COLM, DL_DVOR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASDN},
+  {XXXXXXX, DL_TAR1, DL_TAR2, DL_TAR3, DL_TAR4, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ASRP},
+  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, AG_NORM, XXXXXXX, XXXXXXX, XXXXXXX, AG_SWAP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
 }
 };
 
@@ -266,5 +271,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 
-	return true;
+  return true;
 }
