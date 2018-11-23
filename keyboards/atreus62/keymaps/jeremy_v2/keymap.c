@@ -40,7 +40,6 @@ enum {
 #define LT_CURS LT(CURS, KC_SPC)
 #define LT_ENTP LT(PROG, KC_ENT)
 #define LT_CNFG MO(CNFG)
-#define TD_QUOT TD(TD_QUOTE_GRV)
 
 #define MK_CTSF LCTL(KC_LSFT)
 #define MK_ALSF LALT(KC_LSFT)
@@ -59,12 +58,6 @@ enum {
 #define XXXXXXX KC_NO
 #define X       KC_NO
 
-//Tap Dance Definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-  //Tap once for Esc, twice for Caps Lock
-  [TD_QUOTE_GRV]  = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, KC_GRV)
-};
-
 /*
 [BLANK] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
@@ -81,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_LBRC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    XXXXXXX, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC},
   {KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    XXXXXXX, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT},
   {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_BSPC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MK_SFBS},
-  {KC_LCTL, KC_LALT, KC_LGUI, M_INVTG, KC_TAB,  LT_CURS, KC_DELT, LT_ENTP, KC_ESC,  M_INVTG, KC_MENU, KC_RALT, KC_RCTL}
+  {KC_LCTL, KC_LALT, KC_LGUI, M_INVTG, KC_TAB,  LT_CURS, KC_DELT, LT_ENTP, KC_ESC,  M_INVTG, KC_LGUI, KC_RALT, KC_RCTL}
 },
 [TAR1] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
@@ -133,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {_______, XXXXXXX, _______, _______, XXXXXXX, _______, _______, _______, _______, _______, _______, LT_CNFG, RESET},
 },
 [PROG] = {
-  {XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
+  {KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   XXXXXXX, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12},
   {XXXXXXX, KC_LBRC, KC_RBRC, KC_LPRN, KC_RPRN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX},
   {XXXXXXX, KC_GRV,  KC_DLR,  KC_LCBR, KC_RCBR, XXXXXXX, XXXXXXX, KC_EQL,  KC_PLUS, KC_MINS, KC_ASTR, KC_SLSH, XXXXXXX},
   {XXXXXXX, M_DPIP,  M_DAMP,  KC_AMPR, KC_PIPE, XXXXXXX, XXXXXXX, XXXXXXX, KC_EXLM, KC_LABK, KC_RABK, XXXXXXX, XXXXXXX},
@@ -185,7 +178,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
       case DL_DVOR:
         persistent_default_layer_set(1UL<<DVOR);
-				return false;
+        return false;
 
       case M_ENTUP:
         SEND_STRING(SS_TAP(X_HOME)"\n"SS_TAP(X_UP));
