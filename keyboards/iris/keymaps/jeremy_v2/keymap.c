@@ -15,16 +15,19 @@ enum {
   M_SFLK,
 };
 
-#define LT_CURS LT(CURS, KC_SPC)
-#define LT_ENTP LT(PROG, KC_ENT)
+#define LT_CURB LT(CURS, KC_BSPC)
+#define LT_PROD LT(PROG, KC_DELT)
 
-#define MK_CTLA LCTL_T(KC_A)
-#define MK_ALTZ LALT_T(KC_Z)
-#define MK_GUIX LGUI_T(KC_X)
-#define MK_CTLS RCTL_T(KC_SCLN)
-#define MK_ALTS RALT_T(KC_SLSH)
-#define MK_GUID LGUI_T(KC_DOT)
-#define MK_SFBS LSFT_T(KC_BSLS)
+#define MK_CTLE LCTL_T(KC_EQL)
+#define MK_ALTS LALT_T(KC_BSLS)
+#define MK_GUIZ LGUI_T(KC_Z)
+
+#define MK_CTLQ RCTL_T(KC_QUOT)
+#define MK_ALTB RALT_T(KC_BSLS)
+#define MK_GUIS LGUI_T(KC_SLSH)
+
+#define MK_SFTB LSFT_T(KC_TAB)
+#define MK_SFEC RSFT_T(KC_ESC)
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -36,11 +39,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LBRC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_EQL,  MK_CTLA, KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    MK_CTLS, KC_QUOT,
+     MK_CTLE,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, MK_CTLQ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, MK_ALTZ, MK_GUIX, KC_C,    KC_V,    KC_B,    KC_HOME,          KC_END,  KC_N,    KC_M,    KC_COMM, MK_GUID, MK_ALTS, MK_SFBS,
+     MK_ALTS, MK_GUIZ, KC_X,    KC_C,    KC_V,    KC_B,    KC_HOME,          KC_END,  KC_N,    KC_M,    KC_COMM, KC_DOT,  MK_GUIS, MK_ALTB,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_TAB,  LT_CURS, KC_BSPC,                   KC_DELT, LT_ENTP, KC_ESC
+                                    MK_SFTB,  KC_SPC, LT_CURB,                   LT_PROD, KC_ENT,  MK_SFEC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -54,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      M_SFLK,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MUTE,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    XXXXXXX, _______, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX
+                                    XXXXXXX, XXXXXXX, _______,                   XXXXXXX, XXXXXXX, XXXXXXX
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -68,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      XXXXXXX, M_DPIP,  M_DAMP,  KC_AMPR, KC_PIPE, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, KC_EXLM, KC_LABK, KC_RABK, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, _______, XXXXXXX
+                                    XXXXXXX, XXXXXXX, XXXXXXX,                   _______, XXXXXXX, XXXXXXX
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -118,7 +121,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   } else {
     switch (keycode) {
-      case LT_CURS:
+      case LT_CURB:
+	    case LT_PROD:
         if (shift_lock) {
           shift_lock = false;
           unregister_code(KC_LSFT);
